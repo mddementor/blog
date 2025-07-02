@@ -14,6 +14,7 @@ const PostList =  () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const postData = useSelector(( state: RootState) => state.posts.postsData);
+    const totalPost = useSelector((state: RootState)=> state.posts.total)
 
     useEffect(() => {
         dispatch(getPosts(1))
@@ -39,7 +40,7 @@ const PostList =  () => {
             <div className='pagination-wrapper'>
                 <Pagination
                     defaultCurrent={1}
-                    total={500}
+                    total={totalPost}
                     onChange={handleChange}
                     showSizeChanger={false}
                 />

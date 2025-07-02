@@ -1,0 +1,18 @@
+.register-window{
+  width: 344px;
+  height: 534px;
+  background-color: white;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+.register-window label input {
+  height: 40px;
+  width: 100%;
+}
+.register-window label{
+  width: 100%;
+}
