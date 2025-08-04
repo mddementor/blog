@@ -18,7 +18,7 @@ export interface article {
     };
 }
 interface PostsState {
-    postsData: demoPost[];
+    postsData: article[];
     isLoading: boolean;
     error: string | null;
     page: number;
