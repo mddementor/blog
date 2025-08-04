@@ -14,9 +14,11 @@ const DemoPost = ({ slug }: { slug: string }) => {
     );
 
 
-    const user = JSON.parse(localStorage.getItem('user'));
-    const token = user?.token;
-    if (!user || !user.token) return;
+    const userStr = localStorage.getItem('user');
+    if (!userStr) return null;
+
+    const userParse = JSON.parse(userStr);
+    if (!userParse || !userParse.token) return null;
 
     if (!post) return null;
 
