@@ -3,6 +3,7 @@ import type {TypedUseSelectorHook} from  "react-redux"
 import type { AppDispatch, RootState } from "./store/store.tsx";
 import type {FormProps} from "antd";
 import type {fieldType} from "./pages/SIgnIn.tsx";
+
 export interface Article {
     title: string,
     description: string,
@@ -80,20 +81,20 @@ export const validateText = (value: string) => {
     return value.trim() !== ''
 };
 
-export type article = {
-        slug: string,
-        "title": string,
-        "description": string,
-        "body": string,
-        "tags": string[],
-        "createdAt": string,
-        "updatedAt": string,
-        "favorited": boolean,
-        "favoritesCount": number,
-        "author": {
-        "bio": string,
-            "image": string,
-            "username": string,
-            "following": boolean
-    }
-}
+// export type article = {
+//         slug: string,
+//         "title": string,
+//         "description": string,
+//         "body": string,
+//         "tags": string[],
+//         "createdAt": string,
+//         "updatedAt": string,
+//         "favorited": boolean,
+//         "favoritesCount": number,
+//         "author": {
+//         "bio": string,
+//             "image": string,
+//             "username": string,
+//             "following": boolean
+//     }
+// }

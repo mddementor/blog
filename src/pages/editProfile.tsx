@@ -20,7 +20,7 @@ const EditProfile = () => {
     const dispatch = useDispatch<AppDispatch>();
     const token = localStorage.getItem('token');
     const [password, setPassword] = useState('');
-    const [userName, setUserName] =useState('');
+    const [username, setUserName] =useState('');
     const [email, setEmail] = useState('');
     const [avatar, setAvatar] =useState('');
     useEffect(() => {
@@ -34,17 +34,17 @@ const EditProfile = () => {
 
     const handleSubmit = useCallback(() => {
         const isValid = allTrue(
-            () => validateName(userName),
+            () => validateName(username),
             () => validateEmail(email),
             () => validatePassword(password),
             () => validateAvatarUrl(avatar)
         );
 
         if (isValid && token) {
-            dispatch(updateUser({email, userName, password, token}))
+            dispatch(updateUser({email, username, password, token}))
         }
 
-    }, [userName, email, password, avatar, dispatch, token]);
+    }, [username, email, password, avatar, dispatch, token]);
     
     return(
         <Form
@@ -65,7 +65,7 @@ const EditProfile = () => {
                 <Input
                     style={{ width: '100%' }}
                     placeholder='Username'
-                    value={userName}
+                    value={username}
                     onChange={(e) => {
                         setUserName(e.target.value)
                     }}

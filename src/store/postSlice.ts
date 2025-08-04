@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { article } from "../utilits.ts";
+//import type { article } from "../utilits.ts";
 
 export interface Article {
     slug: string;
@@ -92,7 +92,7 @@ async function deleteArticleAPI(slug: string, token: string) {
     return true;
 }
 
-async function favoriteArticle (article: article, token: string){
+async function favoriteArticle (article: Article, token: string){
     const response = await fetch(`${baseURL}/articles/${article.slug}/favorite`,{
         method: "POST",
         headers: {
@@ -108,7 +108,7 @@ async function favoriteArticle (article: article, token: string){
     return data
 }
 
-async function unFavoriteArticle (article: article, token: string){
+async function unFavoriteArticle (article: Article, token: string){
     const response = await fetch(`${baseURL}/articles/${article.slug}/favorite`,{
         method: "DELETE",
         headers: {
@@ -162,7 +162,7 @@ export const deleteArticle = createAsyncThunk(
 
 export const likeArticle = createAsyncThunk(
     'articles/favorite',
-    async ({article, token}: {article: article, token: string}, thunkAPI)=>{
+    async ({article, token}: {article: Article, token: string}, thunkAPI)=>{
         try{
            const response = await favoriteArticle(article, token);
            return { article: response.article };
@@ -173,7 +173,7 @@ export const likeArticle = createAsyncThunk(
 )
 export const unLikeArticle = createAsyncThunk(
     'articles/unFavorite',
-    async ({article, token}: {article: article, token: string}, thunkAPI)=>{
+    async ({article, token}: {article: Article, token: string}, thunkAPI)=>{
         try{
             const response = await unFavoriteArticle(article, token);
             return { article: response.article };

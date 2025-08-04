@@ -14,15 +14,25 @@ const FullPost = () => {
     const { slug } = useParams();
     const dispatch = useAppDispatch();
     const fullPost  = useAppSelector((state) => state.fullPost.post);
-    const isOwner =  JSON.parse(localStorage.getItem('user'));
     const navigate = useNavigate();
 
     const [like, setLike] = useState(false);
-    const [likesCount, setlikesCount] = useState(0);
+    useEffect(() => {
+        if(slug){
+            dispatch(loadFullPost(slug))
+        }
+    }, [slug, dispatch]);
+
+    const isOwner = localStorage.getItem('user');
+    if(!isOwner){
+        return
+    }
+    const isOwnerParse =    JSON.parse(isOwner);
+
 
     const handleLike = () => {
-        if (!isOwner) return;
-        const token = isOwner.token
+        if (!isOwnerParse) return;
+        const token = isOwnerParse.token
 
         if (fullPost && fullPost.favorited) {
             dispatch(unLikeArticle({ article: fullPost, token }));
@@ -35,14 +45,6 @@ const FullPost = () => {
         setLike(!like)
     };
 
-
-
-    useEffect(() => {
-        if(slug){
-            dispatch(loadFullPost(slug))
-        }
-        }, [slug]);
-
     if(fullPost) {
         return (
             <div className='fullPost'>
@@ -52,7 +54,7 @@ const FullPost = () => {
                     onCancel={() => setIsOpen(false)}
                     onOk={() => {
                         if (slug) {
-                            dispatch(deleteArticle({ slug, token: isOwner.token }));
+                            dispatch(deleteArticle({ slug, token: isOwnerParse.token }));
                             setIsOpen(false);
                             navigate('/');
                         }
@@ -112,8 +114,8 @@ const FullPost = () => {
                 <div>
                     {fullPost.description}
                     {
-                        isOwner !== null &&
-                        isOwner.name === fullPost.author.username ?
+                        isOwnerParse !== null &&
+                        isOwnerParse.name === fullPost.author.username ?
                             <>
                                 <Button
                                     onClick={()=> {
