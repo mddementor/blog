@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import {likeArticle, unLikeArticle} from "./postSlice.ts";
 
 export interface demoPost {
     id: string;
     title: string;
     description: string;
+    favorited: boolean;
 }
 
 interface PostsState {
@@ -33,8 +35,6 @@ const getPosts = createAsyncThunk(
                 throw new Error(`Ошибка при получении постов: ${response.status}`);
             }
             const postsAnd = await response.json();
-            console.log(postsAnd)
-
             const posts = await postsAnd.articles
 
             return {
@@ -75,7 +75,30 @@ const postsSlice = createSlice({
             .addCase(getPosts.rejected, (state, action) => {
                 state.error = action.error.message || 'Unknown error';
                 state.isLoading = false;
+            })
+            .addCase(likeArticle.fulfilled, (state, action) => {
+                const updated = action.payload.article;
+                const index = state.postsData.findIndex(post => post.slug === updated.slug);
+                if (index !== -1) {
+                    state.postsData[index] = {
+                        ...state.postsData[index],
+                        favorited: updated.favorited,
+                        favoritesCount: updated.favoritesCount,
+                    };
+                }
+            })
+            .addCase(unLikeArticle.fulfilled, (state, action) => {
+                const updated = action.payload.article;
+                const index = state.postsData.findIndex(post => post.slug === updated.slug);
+                if (index !== -1) {
+                    state.postsData[index] = {
+                        ...state.postsData[index],
+                        favorited: updated.favorited,
+                        favoritesCount: updated.favoritesCount,
+                    };
+                }
             });
+
     }
 });
 

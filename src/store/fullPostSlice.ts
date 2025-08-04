@@ -1,20 +1,23 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-//import type { PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk, type PayloadAction} from "@reduxjs/toolkit";
+import type {Article} from "./postSlice.ts";
+import { likeArticle, unLikeArticle } from './postSlice';
 
 export interface fullPost {
-    article: string;
-    favoriteCount: number;
+    title: string;
+    favorited: boolean;
+    favoritesCount: number;
     tags: string[];
     author: string;
     date: string;
     avatar: string;
     shortDescription: string;
     text: string;
+    slug: string;
     error?: string;
 };
 
 interface stateFullPost {
-    post: fullPost | null;
+    post: Article| null;
     isLoading: boolean;
     error: string | null;
 };
@@ -27,30 +30,43 @@ const initialState: stateFullPost = {
 
 const loadFullPost = createAsyncThunk(
     'fullpost',
-    async (slug: string, {rejectWithValue} ) => {
-        try{
-            const postPromise = await fetch(`https://blog-platform.kata.academy/api/articles/${slug}`);
-            if (!postPromise.ok){
+    async (slug: string, { rejectWithValue }) => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const token = user?.token;
+
+            const postPromise = await fetch(
+                `https://blog-platform.kata.academy/api/articles/${slug}`,
+                {
+                    headers: token ? { Authorization: `Token ${token}` } : {},
+                }
+            );
+
+            if (!postPromise.ok) {
                 throw new Error(`Ошибка при загрузке поста ${postPromise.status}`);
-            };
+            }
+
             const resPost = await postPromise.json();
-            const article = resPost.article
+            const article = resPost.article;
 
             return {
-                article: article.title,
-                favoriteCount: article.favoritesCount,
-                tags: article.tagList,
-                author: article.author.username,
-                date: article.createdAt,
+                slug: article.slug,
+                title: article.title,
+                favorited: article.favorited,
+                favoritesCount: article.favoritesCount,
+                tagList: article.tagList,
+                author: article.author,
+                createdAt: article.createdAt,
                 avatar: article.author.image,
-                shortDescription: article.description,
-                text: article.body
-            }
-        }catch (error: any) {
-          return rejectWithValue(error.message)
+                description: article.description,
+                body: article.body,
+            };
+        } catch (error: any) {
+            return rejectWithValue(error.message);
         }
     }
 );
+
 
 const fullPostSlice = createSlice({
         name: "fullPost",
@@ -59,20 +75,27 @@ const fullPostSlice = createSlice({
 
         },
         extraReducers: (builder) => {
-            builder
-                .addCase(loadFullPost.pending, (state) => {
+
+            builder.addCase(loadFullPost.pending, (state) => {
                     state.isLoading = true;
                     state.error = null;
                     state.post = null;
                 })
-                .addCase(loadFullPost.fulfilled, (state, action) => {
+            builder.addCase(loadFullPost.fulfilled, (state, action:PayloadAction<fullPost>) => {
                     state.isLoading = false;
                     state.post = action.payload;
                 })
-                .addCase(loadFullPost.rejected, (state, action) => {
+            builder.addCase(loadFullPost.rejected, (state, action:PayloadAction<fullPost>) => {
                     state.isLoading = false;
                     state.error = action.payload as string;
                 });
+            builder.addCase(likeArticle.fulfilled, (state, action) => {
+                state.post = action.payload.article;
+            });
+
+            builder.addCase(unLikeArticle.fulfilled, (state, action) => {
+                state.post = action.payload.article;
+            });
         }
     })
 export { loadFullPost };
