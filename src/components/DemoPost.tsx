@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../utilits.ts";
 import { likeArticle, unLikeArticle } from "../store/postSlice.ts";
 import { getDatePost } from "../utilits.ts";
+import type {article} from "../store/postListSlice.tsx";
 import type {RootState} from "../store/store.tsx";
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { Link } from "react-router-dom";
@@ -15,6 +16,7 @@ const DemoPost = ({ slug }: { slug: string }) => {
 
 
     const user = JSON.parse(localStorage.getItem('user'));
+    if(!user) return
     const token = user?.token;
     if (!user || !user.token) return;
 

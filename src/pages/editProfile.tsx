@@ -40,13 +40,11 @@ const EditProfile = () => {
             () => validateAvatarUrl(avatar)
         );
 
-        if (isValid) {
-            console.log('✅ Все данные валидны, можно отправлять запрос на регистрацию');
+        if (isValid && token) {
             dispatch(updateUser({email, userName, password, token}))
-        } else {
-            console.log('❌ Ошибка валидации данных');
         }
-    }, [userName, email, password, avatar]);
+
+    }, [userName, email, password, avatar, dispatch, token]);
     
     return(
         <Form

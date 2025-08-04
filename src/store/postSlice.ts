@@ -20,13 +20,19 @@ export interface Article {
     };
 }
 
+export interface ArticleCreate {
+    title: string;
+    description: string;
+    body: string;
+    tagList: string[];
+    slug?: string;
+}
+
 interface ArticleState {
     articles: Article[];
     loading: boolean;
     error: string | null;
 }
-
-
 
 const initialState: ArticleState = {
     articles: [],
@@ -36,14 +42,14 @@ const initialState: ArticleState = {
 
 const baseURL = 'https://blog-platform.kata.academy/api';
 
-async function createArticleAPI(article: Article, token: string) {
+async function createArticleAPI(ArticleCreate: ArticleCreate, token: string) {
     const response = await fetch(`${baseURL}/articles`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Token ${token}`,
         },
-        body: JSON.stringify({ article }),
+        body: JSON.stringify({ ArticleCreate }),
     });
     if (!response.ok) {
         const errorData = await response.json();
@@ -52,14 +58,14 @@ async function createArticleAPI(article: Article, token: string) {
     return await response.json();
 }
 
-async function updateArticleAPI(article: Article, token: string) {
-    const response = await fetch(`${baseURL}/articles/${article.slug}`, {
+async function updateArticleAPI(ArticleCreate: ArticleCreate, token: string) {
+    const response = await fetch(`${baseURL}/articles/${ArticleCreate.slug}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Token ${token}`,
         },
-        body: JSON.stringify({ article }),
+        body: JSON.stringify({ ArticleCreate }),
     });
     if (!response.ok) {
         const errorData = await response.json();

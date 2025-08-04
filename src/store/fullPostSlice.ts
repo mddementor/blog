@@ -85,7 +85,7 @@ const fullPostSlice = createSlice({
                     state.isLoading = false;
                     state.post = action.payload;
                 })
-            builder.addCase(loadFullPost.rejected, (state, action:PayloadAction<fullPost>) => {
+            builder.addCase(loadFullPost.rejected, (state, action: ReturnType<typeof loadFullPost.rejected>) => {
                     state.isLoading = false;
                     state.error = action.payload as string;
                 });
