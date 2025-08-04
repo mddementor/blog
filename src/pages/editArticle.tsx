@@ -28,6 +28,7 @@ const UpdateArticle = () => {
     const token = localStorage.getItem('token');
     const slug = useParams()
     const navigate = useNavigate()
+    if(!slug || !slug) return
 
     return(
         <div className='create-form'>
