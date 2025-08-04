@@ -14,11 +14,11 @@ const DemoPost = ({ slug }: { slug: string }) => {
     );
 
 
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const user = JSON.parse(localStorage.getItem('user'));
     const token = user?.token;
-    if (!user || !user.token) return; // Неавторизован
+    if (!user || !user.token) return;
 
-    if (!post) return null; // если пост не найден
+    if (!post) return null;
 
     const handleLike = () => {
         const user = JSON.parse(localStorage.getItem('user') || 'null');

@@ -2,15 +2,24 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import {likeArticle, unLikeArticle} from "./postSlice.ts";
 
-export interface demoPost {
-    id: string;
+export interface article {
+    slug: string;
     title: string;
     description: string;
+    body: string;
+    tagList: string[];
+    createdAt: string;
+    updatedAt: string;
     favorited: boolean;
+    favoritesCount: number;
+    author: {
+        username: string;
+        image: string;
+    };
 }
 
 interface PostsState {
-    postsData: demoPost[];
+    postsData: article[];
     isLoading: boolean;
     error: string | null;
     page: number;
