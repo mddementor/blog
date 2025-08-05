@@ -1,4 +1,4 @@
-import type {Article} from "../utilits.ts";
+import type {Article, UpdateArticlePayload} from "../utilits.ts";
 
 const baseURL = 'https://blog-platform.kata.academy/api';
 
@@ -26,7 +26,7 @@ export const create = async (article: Article, token: string):Promise<void> => {
     }
 };
 
-export const update = async (article: Article, token: string) => {
+export const update = async (article: UpdateArticlePayload, token: string) => {
     try{
         const response = await fetch(`${baseURL}/articles/${article.slug}`, {
             method: 'PUT',

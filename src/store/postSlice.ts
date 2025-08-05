@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { UpdateArticlePayload } from "../utilits.ts";
+
 //import type { article } from "../utilits.ts";
 
 export interface Article {
@@ -59,7 +61,7 @@ async function createArticleAPI(articleCreate: ArticleCreate, token: string) {
 }
 
 
-async function updateArticleAPI(article: ArticleCreate, token: string) {
+async function updateArticleAPI(article: UpdateArticlePayload, token: string) {
     const response = await fetch(`${baseURL}/articles/${article.slug}`, {
         method: 'PUT',
         headers: {
@@ -153,7 +155,7 @@ export const createArticle = createAsyncThunk(
 
 export const updateArticle = createAsyncThunk(
     'articles/update',
-    async ({ article, token }: { article: Article; token: string }, { rejectWithValue }) => {
+    async ({ article, token }: { article: UpdateArticlePayload; token: string }, { rejectWithValue }) => {
         try {
             const data = await updateArticleAPI(article, token);
             return data.article;

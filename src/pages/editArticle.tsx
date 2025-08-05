@@ -26,9 +26,11 @@ const UpdateArticle = () => {
     };
 
     const token = localStorage.getItem('token');
-    const slug = useParams()
     const navigate = useNavigate()
-    if(!slug || !slug) return
+    const { slug } = useParams();
+
+    if (!slug) return <div>Article not found</div>;
+
 
     return(
         <div className='create-form'>
@@ -43,8 +45,8 @@ const UpdateArticle = () => {
                             title,
                             description: short,
                             body: text,
-                            tags: cleanTags,
-                            slug: slug.slug
+                            tagList: cleanTags,
+                            slug
                         },
                         token: token!
                     })).then(()=>{navigate('/')})

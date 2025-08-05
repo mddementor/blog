@@ -8,9 +8,18 @@ export interface Article {
     title: string,
     description: string,
     body: string,
-    tags: string[],
+    tagList: string[],
     slug: string
 }
+
+export interface UpdateArticlePayload {
+    title: string;
+    description: string;
+    body: string;
+    tagList: string[];
+    slug: string;
+}
+
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
