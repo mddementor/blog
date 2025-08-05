@@ -57,10 +57,12 @@ const loadFullPost = createAsyncThunk(
                 tagList: article.tagList,
                 author: article.author,
                 createdAt: article.createdAt,
+                updatedAt: article.updatedAt,
                 avatar: article.author.image,
                 description: article.description,
                 body: article.body,
             };
+
         } catch (error: any) {
             return rejectWithValue(error.message);
         }

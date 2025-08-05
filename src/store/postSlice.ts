@@ -42,14 +42,14 @@ const initialState: ArticleState = {
 
 const baseURL = 'https://blog-platform.kata.academy/api';
 
-async function createArticleAPI(ArticleCreate: ArticleCreate, token: string) {
+async function createArticleAPI(articleCreate: ArticleCreate, token: string) {
     const response = await fetch(`${baseURL}/articles`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Token ${token}`,
         },
-        body: JSON.stringify({ ArticleCreate }),
+        body: JSON.stringify({ article: articleCreate }),  
     });
     if (!response.ok) {
         const errorData = await response.json();
@@ -58,24 +58,39 @@ async function createArticleAPI(ArticleCreate: ArticleCreate, token: string) {
     return await response.json();
 }
 
-async function updateArticleAPI(ArticleCreate: ArticleCreate, token: string) {
-    const response = await fetch(`${baseURL}/articles/${ArticleCreate.slug}`, {
+
+async function updateArticleAPI(article: ArticleCreate, token: string) {
+    const response = await fetch(`${baseURL}/articles/${article.slug}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Token ${token}`,
         },
-        body: JSON.stringify({ ArticleCreate }),
+        body: JSON.stringify({ article }),
     });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.errors || 'Ошибка при обновлении статьи');
+
+    if (response.status === 204) {
+        return { article: { slug: article.slug } };
     }
 
-    return await response.json();
+    if (!response.ok) {
 
+        let errorMessage = 'Ошибка при обновлении статьи';
+        try {
+            const errorData = await response.json();
+            if (errorData.errors) {
+                errorMessage = JSON.stringify(errorData.errors);
+            }
+        } catch (e) {
+            console.log(e)
+        }
 
+        throw new Error(errorMessage);
+    }
+
+    return await response.json(); // ✅ только если точно не 204
 }
+
 
 async function deleteArticleAPI(slug: string, token: string) {
     const response = await fetch(`${baseURL}/articles/${slug}`, {
