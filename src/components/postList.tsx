@@ -8,7 +8,7 @@ import { Pagination } from "antd";
 import { setPage } from "../store/postListSlice";
 
 const PostList =  () => {
-    const user = useSelector((state: RootState)  => state.user)
+    //const user = useSelector((state: RootState)  => state.user)
     const dispatch = useDispatch<AppDispatch>();
 
     const postData = useSelector(( state: RootState) => state.posts.postsData);

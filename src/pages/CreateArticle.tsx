@@ -7,6 +7,15 @@ import { createArticle } from "../store/postSlice.ts";
 import type {AppDispatch} from "../store/store.tsx";
 import {useNavigate} from "react-router-dom";
 
+interface ArticleCreate {
+    title: string;
+    description: string;
+    body: string;
+    tagList: string[];
+    slug?: string;
+}
+
+
 
 const CreateArticle = () => {
 
@@ -43,8 +52,8 @@ const CreateArticle = () => {
                             description: short,
                             body: text,
                             tagList: cleanTags,
-                            slug: ''
-                        },
+                            slug: '',
+                        } as ArticleCreate,
                         token: token!
                     })).then(()=> navigate('/'))
                 }}

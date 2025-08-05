@@ -57,10 +57,12 @@ const loadFullPost = createAsyncThunk(
                 tagList: article.tagList,
                 author: article.author,
                 createdAt: article.createdAt,
+                updatedAt: article.updatedAt,
                 avatar: article.author.image,
                 description: article.description,
                 body: article.body,
             };
+
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
@@ -81,11 +83,11 @@ const fullPostSlice = createSlice({
                     state.error = null;
                     state.post = null;
                 })
-            builder.addCase(loadFullPost.fulfilled, (state, action:PayloadAction<fullPost>) => {
+            builder.addCase(loadFullPost.fulfilled, (state, action:PayloadAction<Article>) => {
                     state.isLoading = false;
                     state.post = action.payload;
                 })
-            builder.addCase(loadFullPost.rejected, (state, action:PayloadAction<fullPost>) => {
+            builder.addCase(loadFullPost.rejected, (state, action: ReturnType<typeof loadFullPost.rejected>) => {
                     state.isLoading = false;
                     state.error = action.payload as string;
                 });

@@ -6,7 +6,6 @@ import { Button, Form, Input, Checkbox, } from 'antd';
 import {onFinishFailed, validateName, validateEmail, validatePassword} from "../utilits.ts";
 import {registerUser} from "../store/authSlice.tsx";
 
-
 type fieldType = {
     username?: string;
     email?: string;
@@ -29,12 +28,13 @@ const SignUp = () => {
     return (
         <Form
             className='register-window'
-            onFinish={({ username, email, password }) => {
+            onFinish={(values: Required<Pick<fieldType, 'username' | 'email' | 'password'>>) => {
+                const { username, email, password } = values;
                 dispatch(registerUser({
-                    userName: username!,
-                    email: email!,
-                    password: password!
-                })).then(()=>{navigate('/')})
+                    userName: username,
+                    email,
+                    password
+                })).then(() => navigate('/'));
             }}
             onFinishFailed={onFinishFailed}
             layout='vertical'

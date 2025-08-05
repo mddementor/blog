@@ -71,7 +71,7 @@ const postsSlice = createSlice({
                 state.isLoading = true;
                 state.error = '';
             })
-            .addCase(getPosts.fulfilled, (state, action: PayloadAction<{ postData: demoPost[]; total: number; page: number } | undefined>) => {
+            .addCase(getPosts.fulfilled, (state, action: PayloadAction<{ postData: article[]; total: number; page: number } | undefined>) => {
                 if (action.payload) {
                     state.postsData = action.payload.postData;
                     state.total = action.payload.total;
