@@ -6,6 +6,7 @@ import { getDatePost } from "../utilits.ts";
 import type {RootState} from "../store/store.tsx";
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { Link } from "react-router-dom";
+import type {Article} from "../store/postSlice.ts";
 
 const DemoPost = ({ slug }: { slug: string }) => {
     const dispatch = useAppDispatch();
@@ -29,9 +30,9 @@ const DemoPost = ({ slug }: { slug: string }) => {
         if (!token) return;
 
         if (post.favorited) {
-            dispatch(unLikeArticle({ article: post, token }));
+            dispatch(unLikeArticle({ article: post as Article, token }));
         } else {
-            dispatch(likeArticle({ article: post, token }));
+            dispatch(likeArticle({ article: post as Article, token }));
         }
     };
 

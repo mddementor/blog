@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { UpdateArticlePayload } from "../utilits.ts";
-
 //import type { article } from "../utilits.ts";
 
 export interface Article {
@@ -93,7 +92,6 @@ async function updateArticleAPI(article: UpdateArticlePayload, token: string) {
     return await response.json(); // ✅ только если точно не 204
 }
 
-
 async function deleteArticleAPI(slug: string, token: string) {
     const response = await fetch(`${baseURL}/articles/${slug}`, {
         method: 'DELETE',
@@ -143,7 +141,7 @@ async function unFavoriteArticle (article: Article, token: string){
 
 export const createArticle = createAsyncThunk(
     'articles/create',
-    async ({ article, token }: { article: Article; token: string }, { rejectWithValue }) => {
+    async ({ article, token }: { article: ArticleCreate; token: string }, { rejectWithValue }) => {
         try {
             const data = await createArticleAPI(article, token);
             return data.article;

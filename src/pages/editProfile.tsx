@@ -23,6 +23,7 @@ const EditProfile = () => {
     const [username, setUserName] =useState('');
     const [email, setEmail] = useState('');
     const [avatar, setAvatar] =useState('');
+
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         const user = storedUser ? JSON.parse(storedUser) : null;
